@@ -1,0 +1,7 @@
+# Installare il backend adatto al sistema, non tutti insieme.
+# macOS Apple Silicon: pip install mlx-whisper
+# NVIDIA: installare prima PyTorch CUDA da pytorch.org, poi openai-whisper
+# AMD ROCm: installare prima PyTorch ROCm compatibile, poi openai-whisper
+# Intel GPU: pip install "optimum[openvino]" transformers numpy
+# CPU: pip install openai-whisper
+# FFmpeg deve essere installato separatamente ed essere nel PATH.
