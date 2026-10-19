@@ -1,38 +1,47 @@
-SOTTOTITOLI MULTIPIATTAFORMA
-==========================
+# Whisper Subtitles
 
-Metti questi file nella cartella contenente i video e avvia:
-- macOS: Avvia_macOS.command
-- Windows: Avvia_Windows.bat
-- Linux: Avvia_Linux.sh
+Trascrive i video di una cartella in **ordine alfabetico**, creando per ciascuno un file **`.srt`** (sottotitoli) e **`.txt`** (testo). Usa **Whisper Small**, lingua **inglese** e salta i video già elaborati.
 
-I video vengono elaborati in ordine alfabetico e producono .srt e .txt.
-Il modello predefinito e' Whisper Small e la lingua e' inglese.
-I file gia' elaborati vengono saltati.
+## Avvio
 
-PRIMA INSTALLAZIONE
--------------------
-Installa Python 3 e FFmpeg (quest'ultimo deve essere disponibile nel PATH).
-Installa poi il backend opportuno dentro un ambiente virtuale .venv
-nella stessa cartella, se possibile (vedi requirements.txt).
+Metti i video nella cartella del programma, poi apri:
 
-Esempi:
-Apple Silicon: python3 -m venv .venv && .venv/bin/pip install mlx-whisper
-Windows CPU: py -3 -m venv .venv && .venv\Scripts\pip install openai-whisper
-Linux CPU: python3 -m venv .venv && .venv/bin/pip install openai-whisper
+| Sistema | File |
+|---|---|
+| macOS | `Avvia_macOS.command` |
+| Windows | `Avvia_Windows.bat` |
+| Linux | `Avvia_Linux.sh` |
 
-Per GPU NVIDIA/AMD ROCm e Intel leggi requirements.txt: occorrono
-versioni adeguate di PyTorch o OpenVINO e driver compatibili.
+Richiede **Python 3** e **FFmpeg** nel `PATH`, più il backend installato (vedi sotto). Su macOS/Linux, se necessario: `chmod +x Avvia_macOS.command Avvia_Linux.sh`.
 
-Su macOS e Linux puo' essere necessario rendere eseguibile il launcher:
-chmod +x Avvia_macOS.command Avvia_Linux.sh
-Su Linux, se il doppio clic apre l'editor, seleziona 'Esegui come programma'
-o avvialo dal terminale: ./Avvia_Linux.sh
+## Installazione backend
 
-Da terminale puoi passare opzioni al launcher, per esempio:
-./Avvia_Linux.sh --force
-./Avvia_macOS.command --language it
-Avvia_Windows.bat --backend cpu
+Consigliato un ambiente virtuale `.venv` nella cartella del programma. Installa **solo** il backend adatto alla tua macchina:
 
-I launcher cercano prima Python nell'ambiente locale .venv e poi
-l'installazione di Python del sistema.
+| Hardware | Backend | Installazione |
+|---|---|---|
+| Mac Apple Silicon | MLX / Metal | `pip install mlx-whisper` |
+| NVIDIA (Windows/Linux) | PyTorch CUDA | PyTorch CUDA da [pytorch.org](https://pytorch.org/get-started/locally/) + `pip install openai-whisper` |
+| AMD compatibile (Linux; Windows limitato) | PyTorch ROCm | PyTorch ROCm compatibile + `pip install openai-whisper` |
+| Intel GPU (Windows/Linux) | OpenVINO | `pip install "optimum[openvino]" transformers numpy` |
+| CPU | Whisper | `pip install openai-whisper` |
+
+**GPU non garantita:** servono driver e versioni compatibili. `--backend auto` seleziona MLX, CUDA/ROCm o OpenVINO quando disponibili; altrimenti usa CPU.
+
+## Opzioni
+
+Da terminale, nella cartella del programma:
+
+```bash
+python subtitles.py                        # avvio automatico
+python subtitles.py --language it          # lingua italiana
+python subtitles.py --force                # rigenera i file esistenti
+python subtitles.py --backend openvino     # Intel GPU
+python subtitles.py --backend torch        # NVIDIA/AMD ROCm
+python subtitles.py --backend cpu          # forza CPU
+python subtitles.py "/percorso/ai/video"   # cartella diversa
+```
+
+I launcher accettano le stesse opzioni (es. `./Avvia_Linux.sh --force`). Per OpenVINO: `--ov-device GPU` (predefinito), `CPU` o `AUTO`.
+
+> Al primo avvio il modello viene scaricato da Internet. Le trascrizioni successive possono essere eseguite offline con modello e dipendenze già disponibili.
