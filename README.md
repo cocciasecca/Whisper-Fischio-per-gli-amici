@@ -1,48 +1,24 @@
-# Whisper Subtitles
+# Whisper – Fischio per gli amici
 
-Trascrive i video di una cartella in **ordine alfabetico**, creando per ciascuno un file **`.srt`** (sottotitoli) e **`.txt`** (testo). Usa **Whisper Small**, lingua **inglese** e salta i video già elaborati.
+Trascrive i video in ordine alfabetico e crea file **SRT** e **TXT**, saltando quelli già completati. Lingua predefinita: **inglese**. Modello predefinito: **turbo**.
 
-## Avvio
-Per usarlo basta scaricare tutta la repository andando sul tasto verde Code -> Download ZIP.
+Scarica la repository da **Code → Download ZIP** ed estraila **dove vuoi**. **I video vanno dentro la cartella del programma, accanto a `subtitles.py`**, non nelle sottocartelle.
 
-Metti i video nella cartella del programma, poi apri:
+1. Installa **Python 3.10+** e **FFmpeg**, disponibili nel `PATH`.
+2. Apri il launcher del tuo sistema: `Avvia_Windows.bat`, `Avvia_macOS.command` o `Avvia_Linux.sh`. Crea automaticamente il **venv obbligatorio** `.venv`, poi al primo avvio chiede il modello (**Invio = turbo**) e crea `config.json` con lingua `en`. Senza terminale interattivo usa `turbo`.
+3. Installa il backend nella `.venv` (vedi sotto), poi riapri il launcher.
 
-| Sistema | File |
+Su macOS/Linux, se necessario: `chmod +x Avvia_macOS.command Avvia_Linux.sh`.
+
+Installa **solo il backend adatto**, dal terminale nella cartella del programma. Usa `.venv/bin/python -m pip install …` su macOS/Linux oppure `.venv\Scripts\python.exe -m pip install …` su Windows:
+
+| Hardware | Pacchetto da installare |
 |---|---|
-| macOS | `Avvia_macOS.command` |
-| Windows | `Avvia_Windows.bat` |
-| Linux | `Avvia_Linux.sh` |
+| Mac Apple Silicon | `mlx-whisper` |
+| CPU | `openai-whisper` |
+| NVIDIA / AMD | Prima PyTorch compatibile con CUDA / ROCm, poi `openai-whisper` |
+| Intel GPU | `"optimum[openvino]" transformers numpy` |
 
-Richiede **Python 3** e **FFmpeg** nel `PATH`, più il backend installato (vedi sotto). Su macOS/Linux, se necessario: `chmod +x Avvia_macOS.command Avvia_Linux.sh`.
+Il backend viene scelto automaticamente; l'accelerazione richiede driver e dipendenze compatibili. Il modello viene scaricato al primo utilizzo.
 
-## Installazione backend
-
-Consigliato un ambiente virtuale `.venv` nella cartella del programma. Installa **solo** il backend adatto alla tua macchina:
-
-| Hardware | Backend | Installazione |
-|---|---|---|
-| Mac Apple Silicon | MLX / Metal | `pip install mlx-whisper` |
-| NVIDIA (Windows/Linux) | PyTorch CUDA | PyTorch CUDA da [pytorch.org](https://pytorch.org/get-started/locally/) + `pip install openai-whisper` |
-| AMD compatibile (Linux; Windows limitato) | PyTorch ROCm | PyTorch ROCm compatibile + `pip install openai-whisper` |
-| Intel GPU (Windows/Linux) | OpenVINO | `pip install "optimum[openvino]" transformers numpy` |
-| CPU | Whisper | `pip install openai-whisper` |
-
-**GPU non garantita:** servono driver e versioni compatibili. `--backend auto` seleziona MLX, CUDA/ROCm o OpenVINO quando disponibili; altrimenti usa CPU.
-
-## Opzioni
-
-Da terminale, nella cartella del programma:
-
-```bash
-python subtitles.py                        # avvio automatico
-python subtitles.py --language it          # lingua italiana
-python subtitles.py --force                # rigenera i file esistenti
-python subtitles.py --backend openvino     # Intel GPU
-python subtitles.py --backend torch        # NVIDIA/AMD ROCm
-python subtitles.py --backend cpu          # forza CPU
-python subtitles.py "/percorso/ai/video"   # cartella diversa
-```
-
-I launcher accettano le stesse opzioni (es. `./Avvia_Linux.sh --force`). Per OpenVINO: `--ov-device GPU` (predefinito), `CPU` o `AUTO`.
-
-> Al primo avvio il modello viene scaricato da Internet. Le trascrizioni successive possono essere eseguite offline con modello e dipendenze già disponibili.
+Modifica `config.json` per cambiare modello (`tiny`, `base`, `small`, `medium`, `large`, `turbo`), lingua o backend. I launcher accettano anche opzioni temporanee, per esempio `--model small`, `--backend cpu` e `--force` per rigenerare i risultati. `--model` al primo avvio salva la scelta senza mostrarne la richiesta. Per MLX/OpenVINO puoi indicare un repository Hugging Face compatibile.

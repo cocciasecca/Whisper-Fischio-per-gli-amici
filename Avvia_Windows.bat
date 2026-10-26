@@ -1,22 +1,20 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-if exist ".venv\Scripts\python.exe" (
-    set "PYTHON=.venv\Scripts\python.exe"
-) else (
+if not exist ".venv\Scripts\python.exe" (
     where py >nul 2>nul
     if not errorlevel 1 (
-        set "PYTHON=py -3"
+        py -3 -m venv .venv
     ) else (
-        where python >nul 2>nul
-        if errorlevel 1 (
-            echo Python 3 non trovato. Installalo prima di avviare questo file.
-            pause
-            exit /b 1
-        )
-        set "PYTHON=python"
+        python -m venv .venv
+    )
+    if errorlevel 1 (
+        echo Impossibile creare il venv. Verifica che Python 3 sia installato.
+        pause
+        exit /b 1
     )
 )
+set "PYTHON=.venv\Scripts\python.exe"
 %PYTHON% subtitles.py %*
 set "STATUS=%ERRORLEVEL%"
 echo.

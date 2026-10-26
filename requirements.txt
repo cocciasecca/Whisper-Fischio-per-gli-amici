@@ -1,3 +1,4 @@
+# Venv obbligatorio: usare il Python di .venv con -m pip.
 # Installare il backend adatto al sistema, non tutti insieme.
 # macOS Apple Silicon: pip install mlx-whisper
 # NVIDIA: installare prima PyTorch CUDA da pytorch.org, poi openai-whisper
