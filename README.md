@@ -2,7 +2,7 @@
 
 Trascrive i video in ordine alfabetico in **SRT** e **TXT**, saltando quelli già completati. Lingua predefinita: **inglese**. Modello predefinito: **turbo**.
 
-# Come lo uso?
+## Come lo uso?
 
 1. Clicca **Code → Download ZIP** ed estrai la cartella dove vuoi.
 2. Metti i video dentro questa cartella.
