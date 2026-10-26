@@ -15,7 +15,7 @@ if not exist ".venv\Scripts\python.exe" (
     )
 )
 set "PYTHON=.venv\Scripts\python.exe"
-%PYTHON% subtitles.py %*
+%PYTHON% setup_runtime.py %*
 set "STATUS=%ERRORLEVEL%"
 echo.
 echo Operazione terminata. Codice: %STATUS%

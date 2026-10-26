@@ -1,8 +1,4 @@
-# Venv obbligatorio: usare il Python di .venv con -m pip.
-# Installare il backend adatto al sistema, non tutti insieme.
-# macOS Apple Silicon: pip install mlx-whisper
-# NVIDIA: installare prima PyTorch CUDA da pytorch.org, poi openai-whisper
-# AMD ROCm: installare prima PyTorch ROCm compatibile, poi openai-whisper
-# Intel GPU: pip install "optimum[openvino]" transformers numpy
-# CPU: pip install openai-whisper
-# FFmpeg deve essere installato separatamente ed essere nel PATH.
+# Le dipendenze sono installate automaticamente da setup_runtime.py nel venv.
+# MLX su Mac Apple Silicon; openai-whisper sugli altri sistemi.
+# Con --backend openvino: optimum[openvino], openvino, transformers, numpy.
+# Se FFmpeg manca: imageio-ffmpeg fornisce una copia locale.

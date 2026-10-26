@@ -1,24 +1,19 @@
 # Whisper – Fischio per gli amici
 
-Trascrive i video in ordine alfabetico e crea file **SRT** e **TXT**, saltando quelli già completati. Lingua predefinita: **inglese**. Modello predefinito: **turbo**.
+Trascrive i video in ordine alfabetico in **SRT** e **TXT**, saltando quelli già completati. Lingua predefinita: **inglese**. Modello predefinito: **turbo**.
 
-Scarica la repository da **Code → Download ZIP** ed estraila **dove vuoi**. **I video vanno dentro la cartella del programma, accanto a `subtitles.py`**, non nelle sottocartelle.
+1. Scarica **Code → Download ZIP** ed estrai la cartella **dove vuoi**.
+2. **Metti i video dentro questa cartella, accanto a `subtitles.py`**, non nelle sottocartelle.
+3. Con **Python 3.10+** installato, apri il launcher del tuo sistema:
 
-1. Installa **Python 3.10+** e **FFmpeg**, disponibili nel `PATH`.
-2. Apri il launcher del tuo sistema: `Avvia_Windows.bat`, `Avvia_macOS.command` o `Avvia_Linux.sh`. Crea automaticamente il **venv obbligatorio** `.venv`, poi al primo avvio chiede il modello (**Invio = turbo**) e crea `config.json` con lingua `en`. Senza terminale interattivo usa `turbo`.
-3. Installa il backend nella `.venv` (vedi sotto), poi riapri il launcher.
+| Windows | macOS | Linux |
+|---|---|---|
+| `Avvia_Windows.bat` | `Avvia_macOS.command` | `Avvia_Linux.sh` |
 
-Su macOS/Linux, se necessario: `chmod +x Avvia_macOS.command Avvia_Linux.sh`.
+**Il launcher prepara tutto:** crea il venv obbligatorio `.venv`, chiede il modello (**Invio = turbo**), salva `config.json`, installa il backend e, se manca, una copia locale di FFmpeg. Poi scarica il modello e trascrive. Serve Internet per la prima preparazione; gli avvii successivi riutilizzano quanto installato.
 
-Installa **solo il backend adatto**, dal terminale nella cartella del programma. Usa `.venv/bin/python -m pip install …` su macOS/Linux oppure `.venv\Scripts\python.exe -m pip install …` su Windows:
+Su Mac Apple Silicon usa MLX; sugli altri sistemi installa Whisper/PyTorch, usando la GPU se disponibile oppure la CPU. Driver GPU e build specifiche CUDA/ROCm possono richiedere una configurazione dedicata. Per Intel puoi scegliere `openvino` nel config o con `--backend openvino`: il launcher ne installa le dipendenze.
 
-| Hardware | Pacchetto da installare |
-|---|---|
-| Mac Apple Silicon | `mlx-whisper` |
-| CPU | `openai-whisper` |
-| NVIDIA / AMD | Prima PyTorch compatibile con CUDA / ROCm, poi `openai-whisper` |
-| Intel GPU | `"optimum[openvino]" transformers numpy` |
+Modifica `config.json` per cambiare modello (`tiny`, `base`, `small`, `medium`, `large`, `turbo`), lingua o backend. Opzioni temporanee dei launcher: `--model small`, `--backend cpu`, `--force` per rigenerare i risultati. Al primo avvio `--model` salva direttamente la scelta; senza terminale interattivo viene usato `turbo`.
 
-Il backend viene scelto automaticamente; l'accelerazione richiede driver e dipendenze compatibili. Il modello viene scaricato al primo utilizzo.
-
-Modifica `config.json` per cambiare modello (`tiny`, `base`, `small`, `medium`, `large`, `turbo`), lingua o backend. I launcher accettano anche opzioni temporanee, per esempio `--model small`, `--backend cpu` e `--force` per rigenerare i risultati. `--model` al primo avvio salva la scelta senza mostrarne la richiesta. Per MLX/OpenVINO puoi indicare un repository Hugging Face compatibile.
+Su macOS/Linux, se necessario: `chmod +x Avvia_macOS.command Avvia_Linux.sh`. Su Linux deve essere disponibile il modulo `venv` di Python (su Debian/Ubuntu: pacchetto `python3-venv`). Se un download fallisce, riapri il launcher per riprovare.

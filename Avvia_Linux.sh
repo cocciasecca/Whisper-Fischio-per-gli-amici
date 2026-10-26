@@ -8,7 +8,7 @@ if [ ! -x ".venv/bin/python" ]; then
   python3 -m venv .venv || exit 1
 fi
 PYTHON=".venv/bin/python"
-"$PYTHON" subtitles.py "$@"
+"$PYTHON" setup_runtime.py "$@"
 status=$?
 if [ -t 0 ]; then
   echo

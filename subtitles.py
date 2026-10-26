@@ -151,7 +151,7 @@ def write_outputs(segments, srt, txt, force):
         print('  Salvato:', txt.name)
 
 
-def main():
+def main(prepare=None):
     parser = argparse.ArgumentParser(description='Trascrive video in SRT e TXT su macOS, Windows e Linux.')
     parser.add_argument('folder', nargs='?', default=str(BASE_DIR))
     parser.add_argument('--backend', choices=['auto', 'mlx', 'torch', 'openvino', 'cpu'], default=None)
@@ -172,6 +172,8 @@ def main():
         parser.error(f'Cartella inesistente: {folder}')
     videos = sorted((p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in VIDEO_EXTENSIONS),
                     key=lambda p: (p.name.casefold(), p.name))
+    if prepare is not None:
+        prepare(args)
     backend = select_backend(args.backend)
     print(f'Cartella: {folder}\nBackend: {backend}\nModello: {args.model}\nVideo trovati: {len(videos)}', flush=True)
     done = skipped = failed = 0
