@@ -3,6 +3,7 @@
 Trascrive i video di una cartella in **ordine alfabetico**, creando per ciascuno un file **`.srt`** (sottotitoli) e **`.txt`** (testo). Usa **Whisper Small**, lingua **inglese** e salta i video già elaborati.
 
 ## Avvio
+Per usarlo basta scaricare tutta la repository andando sul tasto verde Code -> Download ZIP.
 
 Metti i video nella cartella del programma, poi apri:
 
